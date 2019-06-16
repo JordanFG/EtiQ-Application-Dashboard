@@ -167,41 +167,23 @@
                   </div>
 				  
                     <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                <thead>
-                                    <tr>
-                                        <th>MESSAGES</th>
-                                        <th>UTILISATEURS</th>
-										<th>MENTIONS</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="odd gradeX">
-                                        <td>Messages</td>
-                                        <td>Nom utilisateur</td>
-										<td>Nombres de messages de haine</td>
-                                    </tr>
-                                    <tr class="even gradeC">
-                                        <td>Messages</td>
-										<td>Nom utilisateur</td>
-                                        <td>Nombres de bons messages</td>
-                                    </tr>
-                                    <tr class="odd gradeA">
-                                        <td>Messages</td>
-										<td>Nom utilisateur</td>
-                                        <td>Nombres de messages fake</td>
-                                    </tr>
-									<tr class="odd gradeA">
-                                        <td>Messages</td>
-										<td>Nom utilisateur</td>
-                                        <td>Nombres de messages fake</td>
-                                    </tr>
-									<tr class="odd gradeA">
-                                        <td>Messages</td>
-										<td>Nom utilisateur</td>
-                                        <td>Nombres de messages fake</td>
-                                    </tr>
-                                </body>
-                            </table>
+                      <thead>
+                        <tr>
+                          <th>UTILISATEURS</th>
+                          <th>MESSAGES</th>
+                          <th>MENTIONS</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for msg in messages %}
+                        <tr class="odd gradeX">
+                          <td> {{ msg.idUser.pseudo }} </td>
+                          <td> {{ msg.message }} </td>
+                          <td> {{ msg.etiquette }} </td>
+                        </tr>                                  
+                      {% endfor %}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
                

@@ -122,7 +122,13 @@ def tableaux(request):
         if data["etiquette"] in ["fake","Fake"]:
             message_haine = data["count"]
 
-    return render_to_response('dashboard/tableaux.html', {"message_bon":message_bon, "message_fake":message_fake, "message_haine":message_haine,})
+    messages = Message.objects.all()
+    # for msg in messages:
+    #     user = msg.idUser.pseudo
+    #     texte = msg.message 
+    #     etiquette = msg.etiquette
+
+    return render_to_response('dashboard/tableaux.html', {"message_bon":message_bon, "message_fake":message_fake, "message_haine":message_haine, "messages":messages})
 
 @login_required(login_url='/dashboard/login')
 def diagramme(request):
@@ -176,22 +182,14 @@ def message_download(request):
     response['Content-Disposition'] = 'attachment; filename="message.csv"'
 
     writer = csv.writer(response, delimiter=';')
-    writer.writerows([['Etiquette'], ['Nombre']])
+    writer.writerow(['Etiquette','Nombre'])
 
     result = Message.objects.values('etiquette')\
                       .order_by('etiquette')\
                       .annotate(count=Count('etiquette'))
     for data in list(result):
-        writer.writerows([data["etiquette"], [data["count"]]])
+        writer.writerow([data["etiquette"], data["count"]])
     return response
-
-def download_pdf(request):
-    resp = HttpResponse(content_type='application/pdf')
-    # dynamic_variable = request.user.some_special_something
-    context = {}
-    result = generate_pdf('tableaux.html', file_object=resp, context=context)
-    return result
-
 
 
 def download_pdf(request):
