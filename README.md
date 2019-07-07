@@ -35,4 +35,3 @@ Puis suivre les etapes suivantes:
 ```python manage.py runserver```
 
 
-

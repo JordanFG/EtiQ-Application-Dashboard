@@ -16,7 +16,7 @@
     <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
     <!-- Generated: 2019-04-04 16:55:45 +0200 -->
-    <title>Tableaux</title>
+    <title>Messages conflictuels</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext' %}">
     <script src="{% static 'dashboard/assets/js/require.min.js' %}"></script>
@@ -87,17 +87,16 @@
               </div>
               <div class="col-lg order-lg-first">
                 <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
-                
                   <li class="nav-item">
-                    <a href="{% url 'tableaux' %}" class="nav-link active"><i class="fe fe-box"></i> Tableaux</a>
+                    <a href="{% url 'tableaux' %}" class="nav-link"><i class="fe fe-box"></i> Tableaux</a>
                   </li>
                   <li class="nav-item dropdown">
                     <a href="{% url 'diagramme' %}" class="nav-link"><i class="fe fe-calendar"></i> Diagrammes</a> 
                   </li>
                   <li class="nav-item dropdown">                             
-                      <a href="{% url 'message_conflictuels' %}" class="nav-link"><i class="fe fe-list ">
-                      </i>Messages-Conflictuels</a>                              
-                  </li>
+                    <a href="{% url 'message_conflictuels' %}" class="nav-link active"><i class="fe fe-list ">
+                    </i>Messages-Conflictuels</a>                              
+                </li>
                   <li class="nav-item dropdown">
                     <a href="{% url 'formulaire' %}" class="nav-link"><i class="fe fe-edit"></i>Ajouter Administrateur</a> 
                   </li>
@@ -112,48 +111,11 @@
           <div class="container">
               <div class="page-header">
                 <h1 class="page-title">
-                Tableaux 
+                Messages conflictuels 
                 </h1>
-                <div class="btn-list mt-4 text-right col-lg-3 ml-auto">
-                    <button type="submit" class="btn btn-default btn-space"> <a href="{% url 'message_download' %}"> Exporter(csv) </a></button>           
-                </div>
-                <div class="btn-list mt-4 text-right col-lg-3 ml-auto">
-                  <button type="submit" class="btn btn-default btn-space"> <a href="{% url 'download_pdf' %}"> Exporter(pdf) </a></button>           
-              </div>
               </div>
             <div class="row row-cards">
-	
-                <div class="card">
-                  <div class="card-header">
-                    <h3 class="card-title">Statisques des Messages</h3>
-                  </div>
-				  
-                    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                <thead>
-                                    <tr>
-                                        <th>MENTIONS</th>
-                                        <th>NOMBRES</th>
-                                    </tr>
-                                </thead>
-                                <tbody> 
-                                  <tr class="odd gradeX">
-                                    <td>HAINE</td>
-                                    <td>{{ message_haine }}</td> 
-                                  </tr>
-                                  <tr class="even gradeC">
-                                    <td>BON</td>
-                                    <td>{{ message_bon }}</td>
-                                  </tr>
-                                  <tr class="odd gradeA">
-                                    <td>FAKE</td>
-                                    <td>{{ message_fake }}</td>
-                                  </tr>	                                 
-                                  </tbody>
-                                  
-                            </table>
-                  </div>
-                </div>
-               
+
                
             </div>
         </div>
@@ -169,20 +131,26 @@
 				  
                     <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                       <thead>
-                        <tr>
-                          <th>UTILISATEURS</th>
-                          <th>MESSAGES</th>
-                          <th>MENTIONS</th>
-                        </tr>
+                        <tr align=center>
+                          <th rowspan=2>MESSAGES</th>
+                          <th rowspan=2>Nombre d'occurences</th>
+                          <!-- <th colspan="3">MENTIONS</th>
+                            <tr align=center>
+                              <th>Bon</th>
+                              <th>Fake</th>
+                              <th>Haine</th></tr> -->
+                            </tr>
                       </thead>
                       <tbody>
-                        {% for msg in messages %}
-                        <tr class="odd gradeX">
-                          <td> {{ msg.idUser.pseudo }} </td>
-                          <td> {{ msg.message }} </td>
-                          <td> {{ msg.etiquette }} </td>
-                        </tr>                                  
-                      {% endfor %}
+                        {% for var in result %}
+                          {% if var.count is not 1%}
+                            <tr class="odd gradeX">
+                              <td> {{ var.message }} </td>
+                              <td> {{ var.count }} </td>
+                              <!-- <td> iii </td> -->
+                            </tr>  
+                          {% endif %}                                
+                        {% endfor %}
                       </tbody>
                     </table>
                   </div>

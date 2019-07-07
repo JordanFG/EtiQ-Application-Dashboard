@@ -12,7 +12,7 @@ from django.contrib import messages
 # from django.xhtml2pdf.utils import generate_pdf
 from xhtml2pdf import pisa             # import python module
 from .models import Message
-from django.db.models import Count, Q
+from django.db.models import Count, Q, F
 from django.db.models.functions import TruncMonth
 
 #Pour gerer les stats par intervalle de temps
@@ -65,11 +65,11 @@ def link_callback(uri, rel):
 @login_required(login_url='/dashboard/login')
 def index(request):
 
-    return  render_to_response('dashboard/index.html', {})
+    return  render_to_response('dashboard/tableaux.html', {})
 
 def loginView(request):
     if request.user.is_authenticated:
-        return redirect('dashboard.index')
+        return redirect('dashboard.tableaux')
     
     else:
         template = loader.get_template('dashboard/login.html')
@@ -85,7 +85,7 @@ def loginView(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('index')
+                return redirect('tableaux')
             else:
                 messages.add_message(request, messages.INFO, 'Wrong credentials!.')
                 return render(request, 'dashboard/login.html', {})
@@ -171,8 +171,13 @@ def diagramme(request):
         if data["etiquette"] in ["Haine", "haine"]:
             month_values_haines[data["month"].month-1] = data["count"] 
         if data["etiquette"] in ["fake","Fake"]:
+            month_values_fakes[data["month"].month-1] = data["count"] 
+        if data["etiquette"] in ["Bon-Fake","Bon-fake", "bon-fake"]:
             month_values_fakes[data["month"].month-1] = data["count"]
-
+        if data["etiquette"] in ["Fake-Antisemique"]:
+            month_values_fakes[data["month"].month-1] = data["count"]
+        
+ 	
     return render_to_response('dashboard/diagramme.html', {'etiq_semaine':etiq_semaine, "etiq_mois":etiq_mois, "etiq_annee":etiq_annee, "month_values_bons": month_values_bons, "month_values_haines": month_values_haines, "month_values_fakes": month_values_fakes})
 
 @login_required(login_url='/dashboard/login')
@@ -193,7 +198,7 @@ def message_download(request):
 
 
 def download_pdf(request):
-    template_path = 'dashboard/diagramme.html'
+    template_path = 'dashboard/tableaux.html'
     context = {}
     # Create a Django response object, and specify content_type as pdf
     response = HttpResponse(content_type='application/pdf')
@@ -214,3 +219,43 @@ def download_pdf(request):
 def formulaire(request):
     return render_to_response('dashboard/formulaire.html', {})
 
+@login_required(login_url='/dashboard/login')
+def message_conflictuels(request):
+    messages = Message.objects.all()
+    # for msg in messages:
+    #     user = msg.idUser.pseudo
+    #     texte = msg.message 
+    #     etiquette = msg.
+    
+    result = Message.objects.values('message').order_by('message').annotate(count=Count('message'))
+    # bon = Message.objects.values('message').order_by('message', F('etiquette')).annotate(count=Count('message')).get(etiquette="Bon").first()
+    # print(bon)
+
+    # for data in result:
+    #     if data["etiquette"] in ["Bon", "bon"]:
+    #         month_values_bons[data["month"].month-1] =  data["count"] 
+
+    # for data in list(bon):
+    #     if data['count'] is not 1:
+    #         msg = data
+    #         print(msg)
+
+    nbre_user = Message.objects.values('idUser_id')\
+                      .distinct()\
+                      .order_by('idUser_id')\
+                      .annotate(count=Count('idUser_id'))
+    # print(nbre_user)
+
+    return render_to_response('dashboard/message.html', {"messages":messages, "result":result})
+
+#  result = Message.objects.values('message')\
+#                       .distinct()\
+#                       .order_by('etiquette')\
+#                       .annotate(count=Count('etiquette'))
+#     for data in list(result):
+#         if data["etiquette"] in ["Bon", "bon"]:
+#             message_bon = data["count"]
+#         if data["etiquette"] in ["Haine", "haine"]:
+#             message_fake = data["count"]
+#         if data["etiquette"] in ["fake","Fake"]:
+#             message_haine = data["count"]

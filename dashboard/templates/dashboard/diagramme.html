@@ -59,9 +59,9 @@
         <div class="header py-4">
           <div class="container">
             <div class="d-flex">
-              <a class="header-brand" href="{% url 'index' %}">
-                <img src="./Etiq.png" class="header-brand-img" alt="tabler logo">
-				<p>ETIQ_ADMIN</p>
+              <a class="header-brand" href="{% url 'tableaux' %}">
+                <img src="{% static 'dashboard/etiq.png' %}" class="header-brand-img" alt="tabler logo">
+				        <h6> ETIQ_ADMIN </h6>
               </a>
               <div class="d-flex order-lg-3 ml-auto">
                 <ul class="nav navbar-top-links navbar-right">
@@ -99,9 +99,6 @@
               </div>
               <div class="col-lg order-lg-first">
                 <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
-                  <!-- <li class="nav-item">
-                    <a href="{% url 'index' %}" class="nav-link"><i class="fe fe-home"></i> Accueil</a>
-                  </li> -->
                   <li class="nav-item">
                     <a href="{% url 'tableaux' %}" class="nav-link"><i class="fe fe-box"></i> Tableaux</a>
                   </li>
@@ -109,11 +106,12 @@
                     <a href="{% url 'diagramme' %}" class="nav-link active">
                       <i class="fe fe-calendar"></i> Diagrammes</a> 
                   </li>
+                  
                   					
                   <li class="nav-item dropdown">                             
-                    <a href="javascript:void(0)" class="nav-link"><i class="fe fe-list ">
+                    <a href="{% url 'message_conflictuels' %}" class="nav-link"><i class="fe fe-list ">
                     </i>Messages-Conflictuels</a>                              
-                  </li>
+                </li>
                   <li class="nav-item dropdown">
                     <a href="{% url 'formulaire' %}" class="nav-link"><i class="fe fe-edit"></i>Ajouter Administrateur</a> 
                   </li>
@@ -128,10 +126,10 @@
             <div class="page-header">
               <h1 class="page-title">
                Diagrammes
-              </h1>
+              <!-- </h1>
               <div class="btn-list mt-4 text-right col-lg-3 ml-auto">
                 <button type="submit" class="btn btn-default btn-space"> <a href="{% url 'download_pdf' %}"> Exporter(pdf) </a></button>           
-            </div>
+            </div> -->
             </div>
           
 	
@@ -200,7 +198,7 @@
       <footer class="footer">
         <div class="container">
           <div class="row align-items-center flex-row-reverse">
-            <div class="col-auto ml-lg-auto">
+            <!--<div class="col-auto ml-lg-auto">
               <div class="row align-items-center">
                 <div class="col-auto">
                   <ul class="list-inline list-inline-dots mb-0">
@@ -212,9 +210,9 @@
                   <a href="https://github.com/tabler/tabler" class="btn btn-outline-primary btn-sm">Source code</a>
                 </div>
               </div>
-            </div>
+            </div>-->
             <div class="col-12 col-lg-auto mt-3 mt-lg-0 text-center">
-              Copyright © 2019 <a href=".">Tabler</a>. Theme by <a href="https://codecalm.net" target="_blank">codecalm.net</a> All rights reserved.
+              Copyright © 2019 <!--<a href=".">Tabler</a>.--> Groupe 5 <a href="https://codecalm.net" target="_blank">Dashboard_etiq</a> All rights reserved.
             </div>
           </div>
         </div>
@@ -239,11 +237,14 @@
 					],
 					label: 'Dataset 1'
 				}],
-				labels: [
-          "Bon",
-					"Fake",
-					"Haine",
-				]
+				// labels: [
+        //   "Bon",
+				// 	"Fake",
+				// 	"Haine",
+        //   "Fake-Antisemique",
+        //   "Bon-Fake",
+        //   "Antisemique",
+				// ]
 			},
 			options: {
 				responsive: true,
@@ -272,9 +273,9 @@
             {% endfor %}
 					],
 					backgroundColor: [
-						"red",
+						"green",
 						"orange",
-						"yellow",
+						"red",
 					],
 					label: 'Dataset 1'
 				}],
@@ -311,9 +312,9 @@
             {% endfor %}
 					],
 					backgroundColor: [
-						"red",
+						"green",
 						"orange",
-						"yellow",
+						"red",
 					],
 					label: 'Dataset 1'
 				}],
@@ -344,7 +345,7 @@
 			labels: MONTHS,
 			datasets: [{
 				label: 'Bon',
-				backgroundColor: "#4edd39",
+				backgroundColor: "green",
 				borderColor: "#4edd39",
         fill: false,
 				data: [
@@ -354,7 +355,7 @@
 				]
 			}, {
 				label: 'Haine',
-				backgroundColor: "#f35555",
+				backgroundColor: "red",
 				borderColor:"#f35555",
         fill: false,
 				data: [
@@ -364,7 +365,7 @@
 				]
 			}, {
 				label: 'Fake',
-				backgroundColor: "#f9993d",
+				backgroundColor: "orange",
 				borderColor:"#f9993d",
         fill: false,
 				data: [
